@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+		}
+		 
+		#nav{
+			width: 100%;
+			height: 80px;
+			background: turquoise;
+			margin-top:100px ;
+		}
+		#nav a{
+			font-size: 20px;
+			line-height: 80px;
+			color: black;
+			text-decoration: none;
+			margin-left: 100px;
+		}
+		#layer{
+			width: 100%;
+			height: 100%;
+			background: gray;
+			opacity: 0.3;
+			position: absolute;
+			left: 0;
+			top: 0;
+			display: none;
+			z-index: 1;
+		}
+		#tab{
+			width: 450px;
+			height: 300px;
+			border: 1px solid black;
+			position: absolute;
+			top:50%;
+			left:50%;
+			margin-left: -200px;
+			display: none;
+			z-index: 2;
+		}
+		#tab ul{
+			width: 450px;
+			height: 45px;
+			
+			background: white;
+			
+		}
+		li{
+			list-style: none;
+		}
+		#tab ul li{
+			float: left;
+			line-height: 45px;
+			/*background: paleturquoise;*/
+			 
+			width: 100px;
+			text-align: center;
+			/*margin-right: 5px;*/
+			
+		}
+		#tab ol li{
+			 width: 100%;
+			 height: 255px;
+			 background:paleturquoise ;
+			 display: none;
+		}
+		#tab1,#tab2{
+			padding-top:100px ;
+			padding-left:30px ;
+		}
+		#tab ul li.active{
+			background: paleturquoise;
+		}
+		#tab ol li.show{
+			display: block;
+		}
+		 
+	</style>
+	<script>
+		
+	</script>
+	<body>
+		<div id="nav">Nav<a href="javascript:;" id="reg">请先注册</a></div>
+		<div id="layer"></div>
+		<div id="tab">
+			<div id="tz" style="line-height:45px; text-align:center;width: 100px;height: 45px;position: absolute;left: 0;top:-45px;cursor: move;border: 1px solid black;">拖拽区</div>
+			<ul id="xxk">
+				<li class="active">注册</li>
+				<li>登录</li>
+				<li style="background: none; float: right;" ><a id="close" href="javascript:;">关闭</a></li>
+			</ul>
+			<ol id="content">
+				<li class="show">
+					<table id="tab1" class="bb">
+						<tr>
+							<td>邮箱名：</td><td><input type="text" id="uemail"/><span id="s1">邮箱格式正确</span></td>
+						</tr>
+						<tr>
+							<td>密码：</td><td><input type="text" id="upwd"/><span id="s2">密码不能少于6位字符</span></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="注册" id="btn"/></td><td><input type="reset" value="重置" /></td>
+						</tr>
+					</table>
+				</li>
+				<li>
+					<table id="tab2" class="bb">
+						<tr>
+							<td>邮箱名：</td><td><input type="text" id="tname" /></td>
+						</tr>
+						<tr>
+							<td>密码：</td><td><input type="text" id="tpwd" /></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="登录" id="login"/></td> 
+						</tr>
+					</table>
+				</li>
+			</ol>
+		</div>
+
+	</body>
+</html>
+<script src="common.js"></script>
+<script>		 
+	var nav = $id("nav");
+	var h=100;
+	window.onscroll = function(){
+		var sTop = document.documentElement.scrollTop || document.body.scrollTop;	
+		if( sTop > h ){
+			nav.style.position = "fixed";
+			nav.style.top = 0;
+			nav.style.margin=0;
+		}else{
+			nav.style.position = "fixed";
+			nav.style.top = h-sTop+"px";
+		}
+	}
+	var btn =$id("reg");
+	var otab= $id("tab");
+	var close = $id("close");
+	var olayer= $id("layer");
+	btn.onclick = function(){
+		nav.style.zIndex = -1;
+		otab.style.display = "block";
+		olayer.style.display = "block";
+	}
+	close.onclick = function(){
+   		nav.style.zIndex = 0;
+		otab.style.display = "none";
+		olayer.style.display = "none";
+	}
+  
+	   var otab= $id("tab");
+	var tz = document.getElementById("tz")
+   	tz.onmousedown = function(e){
+		var e = e || event;
+		var disx = e.offsetX;
+ 		var disy = e.offsetY;
+		 var arrPos = [];
+		document.onmousemove = function(e){
+			var e = e || event;
+			var x = e.pageX - disx;
+			var y = e.pageY - disy;
+			var maxL = window.innerWidth - otab.offsetWidth;
+ 			var maxT = window.innerHeight - otab.offsetHeight;
+			x = x < 0 ? 0  : ( x > maxL ? maxL : x );
+ 			y = y < 0 ? 0  : ( y > maxT ? maxT : y );
+			otab.style.left = x + "px";
+			otab.style.top = y + "px";
+			arrPos.push( { x : otab.offsetLeft , y : otab.offsetTop } )
+		}		
+		document.onmouseup = function(){
+			document.onmousemove = null;
+		}
+		
+		return false;
+	}
+	//4、鼠标移入移出注册登录时，可以实现选项卡效果(10分)
+	var otitlt=$id("xxk");
+	var olli = $id("content").children;
+	for(let i=0;i<olli.length;i++){
+		otitlt.children[i].onmouseover = function(){
+			for(var j=0;j<2;j++){
+				otitlt.children[j].className = "";
+				olli[j].style.display = "none";
+			}
+			otitlt.children[i].className = "active";
+			olli[i].style.display = "block";
+		}
+	}
+	// 5、注册区：失去焦点时判断邮箱格式和密码格式是否正确，如果都正确，将输入的内容存入到storage中，否则在文本
+	var content = document.getElementById("uemail");
+	var ii=document.getElementById("s1");
+	var flagyx=false;
+	content.onblur = function(){
+		var reg = /^\w+@\w+\.\w+$/;
+		var str = content.value;
+		if( reg.test(str) ){
+			flagyx = true;
+			ii.innerHTML = "正确";
+		}else{
+			flagyx = false;
+			ii.innerHTML = "邮箱格式错误"
+		}
+	}
+	var passw = document.getElementById("upwd");
+	var jj=document.getElementById("s2");
+	var flagma = false;
+	passw.onblur = function(){
+		var reg = /^.{6,}$/;
+		var str = passw.value;
+		if( reg.test(str) ){
+			flagma = true;
+			jj.innerHTML = "密码格式正确"
+		}else{
+			flagma = false;
+			jj.innerHTML = "至少输入六位字符"
+		}
+	}
+
+	//6、登录区：根据注册的信息完成登录效果 (20分)
+</script>

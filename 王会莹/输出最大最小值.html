@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+
+function fnSort(arr){
+		var t;  //最小变量是t
+		for ( var i = 0 ; i < arr.length-1 ;i++ ) {
+			for( var j = 0 ; j < arr.length - i ; j++ ){
+				if( arr[j] > arr[j+1] ){//如果前一个数>后一个数
+					t = arr[j];           //从小到大
+					arr[j] = arr[j+1];
+					arr[j+1] = t;
+				}
+			}
+		}
+		return arr;
+    }
+    alert(  fnSort([23,56,78,322,2,89,9]))
+
+ var arr = [23,56,78]
+	var brr = [322,2,89,9]
+	function num(arr,brr){
+		for(var i of brr){
+			arr.push(i)
+		}
+		var min = arr.indexOf(Math.min.apply(null,arr));
+		var max = arr.indexOf(Math.max.apply(null,arr));
+		[arr[min],arr[max]]= [arr[max],arr[min]]
+		console.log(arr)
+	}
+	num(arr,brr)
+</script>
